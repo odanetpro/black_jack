@@ -1,6 +1,6 @@
 class Card
-  attr_reader name, points
-  
+  attr_reader :name, :points
+
   def initialize(name, points)
     @name = name
     @points = points
