@@ -16,7 +16,7 @@ class Deck
   def new_deck
     %w[2 3 4 5 6 7 8 9 10 В Д К Т].each do |base|
       %w[♥ ♣ ♠ ♦].each do |suit|
-        @deck << Card.new(base+suit, card_points(base))
+        @deck << Card.new(base + suit, card_points(base))
       end
     end
   end
