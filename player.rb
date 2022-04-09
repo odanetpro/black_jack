@@ -1,11 +1,17 @@
 # frozen_string_literal: true
 
 class Player
-  attr_reader :cards, :bank
+  attr_reader :name, :cards, :bank
 
-  def initialize
-    @bank = 100
+  def initialize(name, bank, type)
+    @name = name
+    @bank = bank
+    @type = type
     new_game
+  end
+
+  def dealer?
+    @type == :dealer
   end
 
   def new_game
@@ -13,13 +19,17 @@ class Player
   end
 
   def add_card(card)
-    @cards << card
+    @cards << card if @cards.size < 3
   end
 
   def make_bet(bet)
-    raise 'Недостаточно денег чтобы продолжать игру!' if (bank - bet).negative?
+    raise "У игрока: #{name} недостаточно денег чтобы продолжать игру!" if (bank - bet).negative?
 
     self.bank -= bet
+  end
+
+  def get_win(cash)
+    self.bank += cash
   end
 
   def count_points
