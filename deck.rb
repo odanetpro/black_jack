@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class Deck
+  attr_reader :deck
+
   def initialize
-    @deck = []
     new_deck
   end
 
@@ -11,6 +12,7 @@ class Deck
   end
 
   def new_deck
+    @deck = []
     %w[2 3 4 5 6 7 8 9 10 В Д К Т].each do |base|
       %w[♥ ♣ ♠ ♦].each do |suit|
         @deck << Card.new(base + suit, card_points(base))
