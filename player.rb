@@ -23,7 +23,7 @@ class Player
   end
 
   def make_bet(bet)
-    raise "У игрока: #{name} недостаточно денег чтобы продолжать игру!" if (bank - bet).negative?
+    raise "\nУ игрока: #{name} недостаточно денег чтобы продолжать игру!" if (bank - bet).negative?
 
     self.bank -= bet
   end
