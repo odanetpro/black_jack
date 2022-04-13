@@ -4,14 +4,6 @@ class Deck
   attr_reader :deck
 
   def initialize
-    new_deck
-  end
-
-  def give_card
-    @deck.pop
-  end
-
-  def new_deck
     @deck = []
     %w[2 3 4 5 6 7 8 9 10 В Д К Т].each do |base|
       %w[♥ ♣ ♠ ♦].each do |suit|
@@ -19,6 +11,10 @@ class Deck
       end
     end
     @deck.shuffle!
+  end
+
+  def give_card
+    @deck.pop
   end
 
   private

@@ -3,29 +3,25 @@
 class Player
   attr_reader :name, :cards, :bank
 
-  def initialize(name, bank, type)
+  def initialize(name, bank, bet, deck)
     @name = name
     @bank = bank
-    @type = type
-    new_game
+    @bet = bet
+    @deck = deck
   end
 
   def dealer?
-    @type == :dealer
+    is_a?(Dealer)
   end
 
   def new_game
     @cards = []
+    dealing
+    beting
   end
 
-  def add_card(card)
-    @cards << card if @cards.size < 3
-  end
-
-  def make_bet(bet)
-    raise "\nУ игрока: #{name} недостаточно денег чтобы продолжать игру!" if (bank - bet).negative?
-
-    self.bank -= bet
+  def add_card
+    @cards << @deck.give_card if @cards.size < 3
   end
 
   def get_win(cash)
@@ -40,7 +36,32 @@ class Player
     sum + 10 <= 21 ? sum + 10 : sum
   end
 
-  private
+  def info
+    "#{name}: #{player_cards} Очки: #{count_points} "
+  end
+
+  protected
 
   attr_writer :bank
+
+  def player_cards
+    cards.map(&:name).join(' ')
+  end
+
+  def dealing
+    2.times { add_card }
+  end
+
+  def beting
+    make_bet
+  rescue RuntimeError => e
+    puts e.message.to_s
+    exit
+  end
+
+  def make_bet
+    raise "\nУ игрока: #{name} недостаточно денег чтобы продолжать игру!" if (bank - @bet).negative?
+
+    self.bank -= @bet
+  end
 end
