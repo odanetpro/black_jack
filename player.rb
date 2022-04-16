@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class Player
+  ACE = 1
+  LIMIT_CARDS = 3
+  LIMIT_POINTS = 21
+  EXTRA_POINTS = 10
+
   attr_reader :name, :cards, :bank
 
   def initialize(name, bank, bet, deck)
@@ -10,10 +15,6 @@ class Player
     @deck = deck
   end
 
-  def dealer?
-    is_a?(Dealer)
-  end
-
   def new_game
     @cards = []
     dealing
@@ -21,7 +22,7 @@ class Player
   end
 
   def add_card
-    @cards << @deck.give_card if @cards.size < 3
+    @cards << @deck.give_card if @cards.size < LIMIT_CARDS
   end
 
   def get_win(cash)
@@ -31,12 +32,16 @@ class Player
   def count_points
     points = cards.map(&:points)
     sum = points.sum
-    return sum unless points.any?(1)
+    return sum unless points.any?(ACE)
 
-    sum + 10 <= 21 ? sum + 10 : sum
+    sum + EXTRA_POINTS <= LIMIT_POINTS ? sum + EXTRA_POINTS : sum
   end
 
   def info
+    open_cards
+  end
+
+  def open_cards
     "#{name}: #{player_cards} Очки: #{count_points} "
   end
 
@@ -53,13 +58,6 @@ class Player
   end
 
   def beting
-    make_bet
-  rescue RuntimeError => e
-    puts e.message.to_s
-    exit
-  end
-
-  def make_bet
     raise "\nУ игрока: #{name} недостаточно денег чтобы продолжать игру!" if (bank - @bet).negative?
 
     self.bank -= @bet

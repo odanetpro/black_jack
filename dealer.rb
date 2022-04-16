@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 class Dealer < Player
-  def hidden_info
+  DEALER_LIMIT_POINTS = 17
+
+  def info
     "#{name}: " + cards.map { '* ' }.join
   end
 
   def turn
-    if count_points < 17
+    if count_points < DEALER_LIMIT_POINTS
       add_card
       return 'дилер берет карту...'
     end

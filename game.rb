@@ -5,6 +5,8 @@ require './deck'
 require './player'
 require './dealer'
 require './black_jack'
+require './console_interface'
 
-black_jack = BlackJack.new
+interface = ConsoleInterface.new
+black_jack = BlackJack.new(interface)
 black_jack.play
